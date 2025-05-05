@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Information System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Airline Information System</h1>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="country">By Country</button>
+            <button class="tab-btn" data-tab="airline">By Airline</button>
+            <button class="tab-btn" data-tab="airport">By Airport</button>
+            <button class="tab-btn" data-tab="route">By Route</button>
+          </div>
+        
+        <div class="tab-content active" id="country-tab">
+            <h2>Search by Country</h2>
+            <div class="search-container" style="width: fit-content;">
+                <input type="text" id="country-search" style="padding: 10px;"placeholder="Search countries...">
+                <button id="clear-btn" disabled>Clear</button>
+            </div>
+            <div class="country-buttons" id="country-list">
+            </div>
+            
+            <div class="results-container" id="country-results" style="display: none;">
+                <div class="results-tabs">
+                    <button class="results-tab-btn active" data-results-tab="airlines">Airlines</button>
+                    <button class="results-tab-btn" data-results-tab="airports">Airports</button>
+                </div>
+                
+                <div class="results-tab-content active" id="airlines-results">
+                    <h3 style="text-align:center">Airlines</h3>
+                    <div class="loading" id="airlines-loading">Loading...</div>
+                    <div class="table-container" style="max-height: 250px; width: 500px; margin:0% auto; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th class="stick-header">Name</th>
+                                    <th class="stick-header">IATA</th>
+                                    <th class="stick-header">ICAO</th>
+                                    <th class="stick-header">Callsign</th>
+                                </tr>
+                            </thead>
+                            <tbody id="airlines-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="results-tab-content" id="airports-results">
+                    <h3 style="text-align:center">Airports</h3>
+                    <div class="loading" id="airports-loading">Loading...</div>
+                    <div class="table-container" style="max-height: 250px; width: 500px; margin:0% auto; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th class="stick-header">Name</th>
+                                    <th class="stick-header">City</th>
+                                    <th class="stick-header">IATA</th>
+                                    <th class="stick-header">ICAO</th>
+                                </tr>
+                                </tr>
+                            </thead>
+                            <tbody id="airports-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="airline-tab">
+            <h2>Search by Airline</h2>
+            <div class="search-container">
+                <div class="search-group">
+                    <input type="text" id="airline-code" placeholder="Enter airline code">
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="airline-code-type" value="iata" checked> IATA
+                        </label>
+                        <label>
+                            <input type="radio" name="airline-code-type" value="icao"> ICAO
+                        </label>
+                    </div>
+                    <button id="airline-search-btn">Search</button>
+                    <button id="airline-clear-btn" disabled>Clear</button>
+                </div>
+            </div>
+            
+            <div class="results-container" id="airline-results" style="display: none;">
+                <div class="airline-details" id="airline-details">
+                    <h3 id="airline-name">Airline Name</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">IATA:</span>
+                            <span id="airline-iata">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">ICAO:</span>
+                            <span id="airline-icao">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Callsign:</span>
+                            <span id="airline-callsign">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Country:</span>
+                            <span id="airline-country">--</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 style="text-align: center;">Routes</h3>
+                <div class="table-container" style="max-height: 183px; width: 500px; margin:0% auto; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Aircraft</th>
+                            </tr>
+                        </thead>
+                        <tbody id="airline-routes-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="airport-tab">
+            <h2>Search by Airport</h2>
+            <div class="search-container">
+                <div class="search-group">
+                    <input type="text" id="airport-code" placeholder="Enter airport code">
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="airport-code-type" value="iata" checked> IATA
+                        </label>
+                        <label>
+                            <input type="radio" name="airport-code-type" value="icao"> ICAO
+                        </label>
+                    </div>
+                    <button id="airport-search-btn">Search</button>
+                    <button id="airport-clear-btn" disabled>Clear</button>
+                </div>
+            </div>
+            
+            <div class="results-container" id="airport-results" style="display: none;">
+                <div class="airport-details" id="airport-details">
+                    <h3 id="airport-name">Airport Name</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">IATA:</span>
+                            <span id="airport-iata">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">ICAO:</span>
+                            <span id="airport-icao">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">City:</span>
+                            <span id="airport-city">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Country:</span>
+                            <span id="airport-country">--</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Coordinates:</span>
+                            <span id="airport-coordinates">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                    <h3 style="text-align: center;">Departing Routes</h3>
+                    <div class="table-container" style="max-height: 162px; width: 500px; margin:0% auto; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th>To</th>
+                                    <th>Airport Name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="departures-body"></tbody>
+                        </table>
+                    </div>
+                
+                <div class="results-tab-content" id="arrivals-results">
+                    <h3>Arriving Routes</h3>
+                    <div class="table-container" style="max-height: 100px; width: 500px; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th>From</th>
+                                    <th>Airport Name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="arrivals-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="results-tab-content" id="airport-airlines-results">
+                    <h3>Airlines Operating at This Airport</h3>
+                    <div class="table-container" style="max-height: 100px; width: 500px; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th>IATA</th>
+                                    <th>Airline Name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="airport-airlines-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="route-tab">
+            <h2>Search by Route</h2>
+            <div class="search-container">
+                <div class="route-search-group">
+                    <div class="route-input" style="width:fit-content;">
+                        <label for="departure-code">Departure (IATA)</label>
+                        <input type="text" id="departure-code" placeholder="e.g. ASF" maxlength="3">
+                    </div>
+                    <div class="route-input" style="width:fit-content; padding-left: 10px; padding-right: 20px">
+                        <label for="arrival-code">Arrival (IATA)</label>
+                        <input type="text" id="arrival-code" placeholder="e.g. KZN" maxlength="3">
+                    </div>
+                    <div class="button-container">
+                        <button id="route-search-btn">Search</button>
+                        <button id="route-clear-btn" disabled>Clear</button>
+                      </div>
+                </div>
+            </div>
+            
+            <div class="results-container active" id="route-results" style="display: none;">
+                <div class="route-details">
+                    <div class="route-header">
+                        <span id="route-from">ASF</span>
+                        <span class="route-arrow">→</span>
+                        <span id="route-to">KZN</span>
+                    </div>
+                    <div class="route-distance">
+                        <span class="detail-label">Distance:</span>
+                        <span id="route-distance-value">-- km</span>
+                    </div>
+                </div>
+                
+                <h3>Airlines Operating This Route</h3>
+                <div class="table-container" style="max-height: 230px; width: 500px; margin:0% auto; overflow-y: auto;">
+                    <table style="border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th>Airline</th>
+                                <th>Aircraft Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="route-airlines-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="client.js"></script>
+</body>
+</html>
